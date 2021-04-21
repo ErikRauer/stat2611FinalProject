@@ -1,0 +1,28 @@
+---
+title: "Stat 2611 Final Project"
+author: "Erik Rauer & Audrey Le Meur"
+date: "4/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+To start, we want to import the data, which comes in two files. It looks like they aren't associated with one another so we can't compare questions from one with the other.
+
+```{r}
+firstPartData <- read.csv("2016 New Coders Survey Part 1.csv")
+secondPartData <- read.csv("2016 New Coders Part 2.csv")
+
+nrow(firstPartData)
+nrow(secondPartData)
+```
+
+
+
+
+```{r}
+sum(is.na(secondPartData))
+```
+
