@@ -9,20 +9,60 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-To start, we want to import the data, which comes in two files. It looks like they aren't associated with one another so we can't compare questions from one with the other.
+To start, we want to import the data, which comes in two files.
 
 ```{r}
-firstPartData <- read.csv("2016 New Coders Survey Part 1.csv")
-secondPartData <- read.csv("2016 New Coders Part 2.csv")
+#firstPartData <- read.csv("2016 New Coders Survey Part 1.csv")
+#secondPartData <- read.csv("2016 New Coders Part 2.csv")
 
-nrow(firstPartData)
-nrow(secondPartData)
+#nrow(firstPartData)
+#str(firstPartData)
+#nrow(secondPartData)
+#str(secondPartData)
+
+actualData <- read.csv("ActualData.csv")
+
+str(actualData)
+```
+
+```{r}
+#Income
+boxplot(actualData$Income ~ actualData$Gender)
+
+incomeFilter <- !is.na(actualData$Gender) & !is.na(actualData$Income)
+
+aggregate(actualData$Income[incomeFilter], list(actualData$Gender[incomeFilter]), mean)
+
+aggregate(actualData$Income[incomeFilter], list(actualData$Gender[incomeFilter]), median)
+
+
+#Expected Earnings
+boxplot(actualData$ExpectedEarning ~ actualData$Gender)
+
+expectedEarningFilter <- !is.na(actualData$Gender) & !is.na(actualData$ExpectedEarning)
+
+aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gender[expectedEarningFilter]), mean)
+
+aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gender[expectedEarningFilter]), median)
 ```
 
 
-
-
 ```{r}
-sum(is.na(secondPartData))
+# Income
+aovIncome <- aov(Income ~ Gender, data = actualData)
+
+summary(aovIncome)
+
+TukeyHSD(aovIncome, "Gender", ordered=T)
+
+
+
+# Expected Income
+aovExpected <- aov(ExpectedEarning ~ Gender, data = actualData)
+
+summary(aovExpected)
+
+TukeyHSD(aovExpected, "Gender", ordered=T)
 ```
+
 
