@@ -20,6 +20,7 @@ Again [@larson_2019]
 
 # Method
 
+
 # Data Analysis
 
 ```{r, include=FALSE}
@@ -32,6 +33,8 @@ actualData <- read.csv("ActualData.csv")
 
 str(actualData)
 ```
+
+## Comparing last year's earnings across gender
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -51,21 +54,6 @@ aggregate(actualData$Income[incomeFilter], list(actualData$Gender[incomeFilter])
 aggregate(actualData$Income[incomeFilter], list(actualData$Gender[incomeFilter]), median)
 
 ```
-```{r, echo=FALSE, warning=FALSE}
-
-#Expected Earnings
-ggplot(data=plotData, aes(x=Gender, y=ExpectedEarning)) + geom_boxplot() + labs(title="Figure 2: Expected Earnings by Gender", y="Expected Earnings (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
-
-```
-```{r, echo=FALSE, include=FALSE}
-
-expectedEarningFilter <- !is.na(actualData$Gender) & !is.na(actualData$ExpectedEarning)
-
-aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gender[expectedEarningFilter]), mean)
-
-aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gender[expectedEarningFilter]), median)
-```
-
 
 ```{r, include=FALSE}
 # Income
@@ -88,6 +76,26 @@ incomeTukey <- incomeTukey %>%
 kable(incomeTukey, caption="Tukey Results for Previous Year's Income by Gender")
 
 ```
+
+## Comparing expected earnings across gender
+
+```{r, echo=FALSE, warning=FALSE}
+
+#Expected Earnings
+ggplot(data=plotData, aes(x=Gender, y=ExpectedEarning)) + geom_boxplot() + labs(title="Figure 2: Expected Earnings by Gender", y="Expected Earnings (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
+
+```
+```{r, echo=FALSE, include=FALSE}
+
+expectedEarningFilter <- !is.na(actualData$Gender) & !is.na(actualData$ExpectedEarning)
+
+aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gender[expectedEarningFilter]), mean)
+
+aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gender[expectedEarningFilter]), median)
+```
+
+
+
 ```{r, include=FALSE}
 
 # Expected Income
