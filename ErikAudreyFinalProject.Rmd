@@ -1,33 +1,44 @@
 ---
-title: "Stat 2611 Final Project"
+title: "Comparing Income across Gender among New Coders"
 author: "Erik Rauer & Audrey Le Meur"
-date: "4/20/2021"
-output: html_document
+date: "5/14/2021"
+output:
+  pdf_document: default
+  html_document: default
+abstract: "This is our Abstract"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-To start, we want to import the data, which comes in two files.
+# Introduction
 
-```{r}
-#firstPartData <- read.csv("2016 New Coders Survey Part 1.csv")
-#secondPartData <- read.csv("2016 New Coders Part 2.csv")
+# Method
 
-#nrow(firstPartData)
-#str(firstPartData)
-#nrow(secondPartData)
-#str(secondPartData)
+# Data Analysis
+
+```{r, include=FALSE}
+library(broom)
+library(dplyr)
+library(knitr)
+library(ggplot2)
 
 actualData <- read.csv("ActualData.csv")
 
 str(actualData)
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
+
+plotData <- actualData %>%
+  filter(!is.na(Gender))
+
 #Income
-boxplot(actualData$Income ~ actualData$Gender)
+ggplot(data=plotData, aes(x=Gender, y=Income)) + geom_boxplot() + labs(title="Figure 1: Last Year's Income by Gender", y="Income (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
+
+```
+```{r, echo=FALSE, include=FALSE}
 
 incomeFilter <- !is.na(actualData$Gender) & !is.na(actualData$Income)
 
@@ -35,9 +46,14 @@ aggregate(actualData$Income[incomeFilter], list(actualData$Gender[incomeFilter])
 
 aggregate(actualData$Income[incomeFilter], list(actualData$Gender[incomeFilter]), median)
 
+```
+```{r, echo=FALSE, warning=FALSE}
 
 #Expected Earnings
-boxplot(actualData$ExpectedEarning ~ actualData$Gender)
+ggplot(data=plotData, aes(x=Gender, y=ExpectedEarning)) + geom_boxplot() + labs(title="Figure 2: Expected Earnings by Gender", y="Expected Earnings (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
+
+```
+```{r, echo=FALSE, include=FALSE}
 
 expectedEarningFilter <- !is.na(actualData$Gender) & !is.na(actualData$ExpectedEarning)
 
@@ -47,22 +63,53 @@ aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gen
 ```
 
 
-```{r}
+```{r, include=FALSE}
 # Income
 aovIncome <- aov(Income ~ Gender, data = actualData)
 
 summary(aovIncome)
 
-TukeyHSD(aovIncome, "Gender", ordered=T)
+```
+```{r, echo=FALSE}
 
+incomeTukey <- tidy(TukeyHSD(aovIncome, "Gender", ordered=T))
 
+incomeTukey <- incomeTukey %>%
+  select(Comparison = contrast,
+         Estimate = estimate,
+         "Lower Bound" = conf.low,
+         "Upper Bound" = conf.high,
+         "P-Value" = adj.p.value)
+
+kable(incomeTukey, caption="Tukey Results for Previous Year's Income by Gender")
+
+```
+```{r, include=FALSE}
 
 # Expected Income
 aovExpected <- aov(ExpectedEarning ~ Gender, data = actualData)
 
 summary(aovExpected)
 
-TukeyHSD(aovExpected, "Gender", ordered=T)
+```
+```{r, echo=FALSE}
+
+expectedTukey <- tidy(TukeyHSD(aovExpected, "Gender", ordered=T))
+
+expectedTukey <- expectedTukey %>%
+  select(Comparison = contrast,
+         Estimate = estimate,
+         "Lower Bound" = conf.low,
+         "Upper Bound" = conf.high,
+         "P-Value" = adj.p.value)
+
+kable(expectedTukey, caption="Tukey Results for Expected Earnings by Gender")
+
 ```
 
 
+
+
+# Conclusion
+
+# References
