@@ -15,7 +15,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-Test [@larson_yitbarek]
+Test [@larson_yitbarek_2017]
+Again [@larson_2019]
 
 # Method
 
