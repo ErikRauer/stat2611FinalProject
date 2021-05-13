@@ -6,6 +6,7 @@ output:
   pdf_document: default
   html_document: default
 abstract: "This is our Abstract"
+bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -13,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Introduction
+
+Test [@larson_yitbarek]
 
 # Method
 
