@@ -134,15 +134,40 @@ femaleEventData <- actualData %>%
   mutate(femaleEvent=(BootcampName %in% femaleEvents) | !is.na(CodeEventDjangoGirls) | !is.na(CodeEventGirlDev) | !is.na(CodeEventRailsGirls) | !is.na(CodeEventWomenCode)) %>% 
   filter(Gender == "female")
 
+maleEventData <- actualData %>%
+  mutate(attendedEvent=(!is.na(AttendedBootcamp) & AttendedBootcamp == 1) | (!is.na(CodeEventNone) & CodeEventNone == 1)) %>%
+  filter(Gender=="male")
+
 #Income
-ggplot(data=femaleEventData, aes(x=femaleEvent, y=Income)) + geom_boxplot() + labs(title="Figure 3: Last Year's Income by Whether a Female Coding Event was Attended", y="Income (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
+ggplot(data=femaleEventData, aes(x=femaleEvent, y=Income)) + geom_boxplot() + labs(title="Figure 3: Previous Year's Income by Whether a Women's Coding Event was Attended", x="Attended a Women-Focused Coding Event", y="Income (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
+
+```
+
+Comparing the distribution of the income of women that attended a women-focused coding event with the distribution of the income of women who did not attend such an event shows some differences between the two. Primarily of note is that the first, second, and third quartiles of the distribution of women who attended an event appear to be roughly $10,000 higher than those who didn’t. Performing a student’s t-test confirms what these observations seem to show: the average women who attended a female focused event had a significantly higher (P-Values of 5.482x10-6) income than those who didn’t. This suggests two possibilities: either women who have a higher income tend to be the ones who go to these women focused coding events, or alternatively, these coding events do help increase the income of their attendees, likely by increasing the attendee’s skillset and thus their quality in the eyes of employers.
+
+Similar to the distributions of previous year’s income, Figure 4 shows a difference in the distribution of expected earnings of women who attended women focused coding events and women who did not. In fact, just like the distributions of income, the first, second and third quartiles of the distribution of expected earnings of women who attended a coding event appear to be $10,000 higher than their counterparts in the distribution of women who did not attend an event. Once again, a student’s t-test indicates that there is a significant difference in the average of these two distributions resulting in a P-Value of 2.399x10-11. This means that, on average, women who attended a women focused coding event expect to earn a significantly higher income than those that didn’t. Once again these results suggest two possibilities. Either the women who attend these coding events have a higher confidence in their abilities and the worth of those abilities, or these events lead to their attendees becoming more self-assured in their coding skills, thus increasing their self-estimation of their worth.
+
+```{r, echo=FALSE, warning=FALSE}
 
 #Expected Earnings
-ggplot(data=femaleEventData, aes(x=femaleEvent, y=ExpectedEarning)) + geom_boxplot() + labs(title="Figure 3: Expected Earnings by Whether a Female Coding Event was Attended", y="Expected Earnings (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
+ggplot(data=femaleEventData, aes(x=femaleEvent, y=ExpectedEarning)) + geom_boxplot() + labs(title="Figure 4: Expected Earnings by Whether a Female Coding Event was Attended", x="Attended a Women-Focused Coding Event", y="Expected Earnings (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
+
+```
+```{r, include=FALSE}
 
 t.test(Income ~ femaleEvent, femaleEventData)
 
 t.test(ExpectedEarning ~ femaleEvent, femaleEventData)
+
+t.test(femaleEventData$Income[femaleEventData$femaleEvent], maleEventData$Income[maleEventData$attendedEvent])
+
+t.test(femaleEventData$ExpectedEarning[femaleEventData$femaleEvent], maleEventData$ExpectedEarning[maleEventData$attendedEvent])
+
+t.test(femaleEventData$Income[!femaleEventData$femaleEvent], maleEventData$Income[!maleEventData$attendedEvent])
+
+t.test(femaleEventData$ExpectedEarning[!femaleEventData$femaleEvent], maleEventData$ExpectedEarning[!maleEventData$attendedEvent])
+
+t.test(maleEventData$ExpectedEarning[maleEventData$attendedEvent], maleEventData$ExpectedEarning[!maleEventData$attendedEvent])
 
 ```
 
