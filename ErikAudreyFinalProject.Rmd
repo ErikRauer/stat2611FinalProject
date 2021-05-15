@@ -12,6 +12,16 @@ bibliography: references.bib
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+```{r, include=FALSE}
+library(broom)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+
+actualData <- read.csv("ActualData.csv")
+
+str(actualData)
+```
 
 # Introduction
 
@@ -31,20 +41,15 @@ All these precautions proved successful, resulting in the survey receiving more 
 
 We decided to take a closer look at the result of two specific questions from the new coder survey. The first is the question “What’s your gender?” which had five possible responses: female, male, agender, trans, and genderqueer. We will compare how these five different groups responded to the following two questions: “About how much money did you make last year (in US dollars)?” and “About how much money do you expect to earn per year at your first developer job (in US dollars)?”. We will generally refer to the responses to these two questions as the person’s income and their expected earnings, respectively. In doing these comparisons we hope to see whether the general trends regarding gender and income are reflected in new coders.
 	
-After analyzing the results of these comparisons, we took a closer look at the results of users identifying as female. Specifically, we examine responses to the questions “Which types of in-person coding events have you attended?” and “Which full-time coding bootcamp have you attended?”. From the various possible answers to these two questions we identified 8 boot camps and events focused on helping women learn to code. We then split all female-identifying responders into two categories: those who have attended a women focused coding event and those who have not attended one. From there, we compared both the current income and the expected earnings of the respondents to see whether attending a women focused coding event makes a significant difference in these values. Finally, we compare the income and expected earnings of women who attended a women focused coding event with the income and expected earnings of men who attended a coding event, as well as the income and expected earnings of women who did not attend a coding event with men who did not either. In doing these comparisons, we hope to determine how helpful these women focused events are.
+After analyzing the results of these comparisons, we took a closer look at the results of users identifying as female. Specifically, we examine responses to the questions “Which types of in-person coding events have you attended?” and “Which full-time coding bootcamp have you attended?”. From the various possible answers to these two questions we identified 8 boot camps and events focused on helping women learn to code (see Table 1). We then split all female-identifying responders into two categories: those who have attended a women focused coding event and those who have not attended one. From there, we compared both the current income and the expected earnings of the respondents to see whether attending a women focused coding event makes a significant difference in these values. Finally, we compare the income and expected earnings of women who attended a women focused coding event with the income and expected earnings of men who attended a coding event, as well as the income and expected earnings of women who did not attend a coding event with men who did not either. In doing these comparisons, we hope to determine how helpful these women focused events are.
+
+```{r, echo=FALSE}
+
+kable(data.frame(bootCamps = c("Ada", "Hackbright Academy", "Ladies Learning Code", "Grace Hopper Academy"), codeEvents = c("Django Girls", "Girl Develop It", "Rails Girls", "Women Who Code")), col.names = c("Boot Camps", "Code Events"), caption="Women Focused Boot Camps and Code Events")
+
+```
 
 # Data Analysis
-
-```{r, include=FALSE}
-library(broom)
-library(dplyr)
-library(knitr)
-library(ggplot2)
-
-actualData <- read.csv("ActualData.csv")
-
-str(actualData)
-```
 
 ## Comparing last year's earnings across gender
 
