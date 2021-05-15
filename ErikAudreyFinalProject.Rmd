@@ -6,6 +6,7 @@ output:
   pdf_document: default
   html_document: default
 abstract: "In 2016, Free Code Camp conducted a survey of its new users, collecting information such as gender, last year’s income, expected future income, events attended, and bootcamp participation [@larson_yitbarek_2017]. Using hypothesis testing in R, we compared last year’s earnings and expected earnings across gender groups. Given that the average woman made more than the average man, we then investigated the relationship between women’s income and their participation in women-centered events and bootcamps. Our analysis showed that women who participated in women-focused events and bootcamps earned more income than women who did not. Future research could evaluate the existence of a causal relationship between participation in these events and increased earnings."
+fontsize: 12pt
 bibliography: references.bib
 csl: journal-of-the-acm.csl
 ---
@@ -54,6 +55,10 @@ After analyzing the results of these comparisons, we took a closer look at the r
 kable(data.frame(bootCamps = c("Ada Developers Academy [@ada_2021]", "Hackbright Academy [@hackbright_2018]", "Ladies Learning Code [@learning_code_2021]", "Grace Hopper Academy [@grace_hopper_2021]"), codeEvents = c("Django Girls [@django_girls]", "Girl Develop It [@girl_develop_it]", "Rails Girls [@railsgirls.com]", "Women Who Code [@women_who_code]")), col.names = c("Boot Camps", "Code Events"), caption="Women Focused Boot Camps and Code Events")
 
 ```
+
+## Analytical Methods
+
+We used the statistical programming language R for most of our analysis. To do so we imported the cleaned data from Larson and Yitbarek’s publicly available GitHub repository  [@larson_yitbarek_2017]. To extract the information we were interested in, various transformations were performed on the data using the dplyr library. Hypothesis testing was conducted using R’s built-in ANOVA, Tukey and t-test methods. The tables were created using knitr’s `kable` function and all plots seen were generated via the ggplot2 library.
 
 # Data Analysis
 
