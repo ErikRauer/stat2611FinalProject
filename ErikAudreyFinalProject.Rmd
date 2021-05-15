@@ -5,7 +5,7 @@ date: "5/14/2021"
 output:
   pdf_document: default
   html_document: default
-abstract: "This is our Abstract"
+abstract: "In 2016, Free Code Camp conducted a survey of its new users, collecting information such as gender, last year’s income, expected future income, events attended, and bootcamp participation [@larson_yitbarek_2017]. Using hypothesis testing in R, we compared last year’s earnings and expected earnings across gender groups. Given that the average woman made more than the average man, we then investigated the relationship between women’s income and their participation in women-centered events and bootcamps. Our analysis showed that women who participated in women-focused events and bootcamps earned more income than women who did not. Future research could evaluate the existence of a causal relationship between participation in these events and increased earnings."
 bibliography: references.bib
 ---
 
@@ -15,8 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-Test [@larson_yitbarek_2017]
-Again [@larson_2019]
+The gap between men and women’s earning is a well documented phenomenon. The average woman makes 82% of the salary of the average man [@bls_2019]. A similar trend occurs among computer programmers, where women earn on average 90.7% the income of men [@bls_2019]. Given these statistics, we hypothesize that the new female users in the Free Code Camp survey will have both a lower income and expected earnings than those identifying as male.
 
 # Method
 
@@ -28,6 +27,11 @@ Larson and Yitbarek designed the survey to get as many responses as possible whi
 
 All these precautions proved successful, resulting in the survey receiving more than 15,000 responses. However, all this data was not perfect and had to be cleaned up quite a bit. To start, the survey data was split into two parts. The first consisted of questions related to the past experience, current employment information, and future goals of the participants. The second part was made of questions regarding the demographic and socioeconomic status of the participants. The data from these two parts had to be combined into one large dataset, associating each user’s responses to the first part with those of the second. In addition to this combination, various other steps were done to clean the data. First, obvious outliers were removed. Since this survey was open to the general public, there existed a variety of responses that were clearly not honest, such as a user who reported an income of $20,000,000. Several questions allowed users to respond with ranges of values, such as “200-210”. These ranges were replaced with their average in order to make analysis of the data simpler. Additionally, some questions, such as “How long have you been coding for?”, permitted responses in terms of months or years. Any response that was measured in years was converted to months, allowing the category to simply be in numbers without messing with the scales of the responses. Finally, text answers were normalized to make similar answers the same. For example, the responses “Back-end Web Developer” and “back end web developer”, while being the same answer, might be counted differently in analysis of the data. To prevent this from occurring, they were normalized into one answer, for example both responses might have been changed to be “Back-End Web Developer” instead.
 
+## Investigation
+
+We decided to take a closer look at the result of two specific questions from the new coder survey. The first is the question “What’s your gender?” which had five possible responses: female, male, agender, trans, and genderqueer. We will compare how these five different groups responded to the following two questions: “About how much money did you make last year (in US dollars)?” and “About how much money do you expect to earn per year at your first developer job (in US dollars)?”. We will generally refer to the responses to these two questions as the person’s income and their expected earnings, respectively. In doing these comparisons we hope to see whether the general trends regarding gender and income are reflected in new coders.
+
+After analyzing the results of these comparisons, we took a closer look at the results of users identifying as female. Specifically, we examine responses to the questions “Which types of in-person coding events have you attended?” and “Which full-time coding bootcamp have you attended?”. From the various possible answers to these two questions we identified 8 boot camps and events focused on helping women learn to code. We then split all female-identifying responders into two categories: those who have attended a women focused coding event and those who have not attended one. From there, we compared both the current income and the expected earning of the respondents to see whether attending a women focused coding event makes a significant difference in these values. In doing so, we hope to determine how helpful these types of events are.
 
 # Data Analysis
 
@@ -43,6 +47,8 @@ str(actualData)
 ```
 
 ## Comparing last year's earnings across gender
+
+Examining Figure 1 does not immediately reveal any major differences among the reported incomes of the various genders. Agender-identifying responders appear to mostly have  reported a fairly low income, most making below $40,000 with one outlier at the $100,000 mark. The distributions for those identifying as male and female are relatively similar, with almost identical ranges and medians. Performing an ANOVA test gives a p-value of 0.00988, indicating that there might exist some significant difference in the distributions. However, running Tukey’s Honest Significance Test gives the results in Table 1. As can be seen, none of the P-Values are below our alpha value of 0.05, suggesting that there is no significant difference between the means of the various distributions. These results indicate that our hypothesis was wrong, the women who participated in this survey did not, on average, have a significantly lower income than the men. In fact, there was no significant difference in the average income of any genders reported in the survey.
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -69,6 +75,7 @@ aovIncome <- aov(Income ~ Gender, data = actualData)
 summary(aovIncome)
 
 ```
+
 ```{r, echo=FALSE}
 
 incomeTukey <- tidy(TukeyHSD(aovIncome, "Gender", ordered=T))
@@ -87,6 +94,8 @@ kable(incomeTukey, caption="Tukey Results for Previous Year's Income by Gender")
 
 ## Comparing expected earnings across gender
 
+Similar to the distributions of income, examining Figure 2 does not immediately suggest major differences in the expected earnings of the various genders. While they appeared to have a relatively low income, the same cannot be said of the expected earnings for users who identify as agender, whose distribution is fairly similar to those of the other genders. The distributions of those identifying as male and female are not as similar as they were for income. While the median of men appears to be below that of women, there seems to be more men who expect to earn a six figure income than women who expect to do so. Performing an ANOVA test results in a P-Value of 0.0000135, which very much indicates that there may be a might be a significant difference between average expected income across gender groupsin the distributions. Running Tukey’s Honest Significance Test presents the results displayed in Table 2. Of the various distributions, there is only a significant difference between the means of the users identifying as male and those identifying as female. In fact, the women who took this survey had a significantly higher expected earning than the men did, which is the complete opposite of what we had hypothesized.
+
 ```{r, echo=FALSE, warning=FALSE}
 
 #Expected Earnings
@@ -101,6 +110,9 @@ aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gen
 
 aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gender[expectedEarningFilter]), median)
 ```
+
+
+
 ```{r, include=FALSE}
 
 # Expected Income
@@ -147,6 +159,8 @@ t.test(ExpectedEarning ~ femaleEvent, femaleEventData)
 ```
 
 
-# Conclusion
+# Conclusions
+
+# Possible Future Work
 
 # References
