@@ -26,7 +26,12 @@ str(actualData)
 
 # Introduction
 
+Free Code Camp is a website whose goal is to teach beginners how to code. In 2016 the site hosted a survey of it’s users in an attempt to better understand the demographic makeup of new coders. The survey asked a wide variety of questions regarding the current socioeconomic and future employment goals of the respondents, as well as their past experiences with coding. Included in these questions was one on the gender of the respondent, which we were interested in for this study.
+
 The gap between men and women’s earning is a well documented phenomenon. The average woman makes 82% of the salary of the average man [@bls_2019]. A similar trend occurs among computer programmers, where women earn on average 90.7% the income of men [@bls_2019]. Given these statistics, we hypothesize that the new female users in the Free Code Camp survey will have both a lower income and expected earnings than those identifying as male.
+
+Women are traditionally underrepresented in STEM, especially in the field of Computer Science, where women received only 18% of all Computer Science bachelor’s degrees awarded in the year 2015 [@nsf_2018]. There exist a couple of organizations whose goal is to reduce this large disparity in gender. They do so in a variety of ways, one of which is by hosting boot camps and coding events whose focus is on helping women develop their coding skills and getting them more interested in the field of Computer Science. We hypothesize that these boot camps and coding events are effective and that attendees of these events tend to have a higher income and expected earning than those who have not attended any.
+
 
 # Method
 
@@ -144,6 +149,9 @@ kable(expectedTukey, caption="Tukey Results for Expected Earnings by Gender")
 
 ## Comparing income and expected earnings on whether or not they attended a female coding event
 
+
+Comparing the distribution of the income of women that attended a women-focused coding event with the distribution of the income of women who did not attend such an event shows some differences between the two. Primarily of note is that the first, second, and third quartiles of the distribution of women who attended an event appear to be roughly $10,000 higher than those who didn’t. Performing a student’s t-test confirms what these observations seem to show: the average women who attended a female focused event had an income of $8,000 more than those who didn't, which is a significantly higher amount (p-values of 5.482x10-6). This suggests two possibilities: either women who have a higher income tend to be the ones who go to these women focused coding events, or alternatively, these coding events do help increase the income of their attendees, likely by increasing the attendee’s skillset and thus their quality in the eyes of employers.
+
 ```{r, echo=FALSE, warning=FALSE}
 
 femaleEvents <- c("Ada", "Hackbright Academy", "Ladies Learning Code", "Grace Hopper", "Grace Hopper Academy", "Women Who Code", "Girl Develop It")
@@ -161,7 +169,6 @@ ggplot(data=femaleEventData, aes(x=femaleEvent, y=Income)) + geom_boxplot() + la
 
 ```
 
-Comparing the distribution of the income of women that attended a women-focused coding event with the distribution of the income of women who did not attend such an event shows some differences between the two. Primarily of note is that the first, second, and third quartiles of the distribution of women who attended an event appear to be roughly $10,000 higher than those who didn’t. Performing a student’s t-test confirms what these observations seem to show: the average women who attended a female focused event had an income of $8,000 more than those who didn't, which is a significantly higher amount (p-values of 5.482x10-6). This suggests two possibilities: either women who have a higher income tend to be the ones who go to these women focused coding events, or alternatively, these coding events do help increase the income of their attendees, likely by increasing the attendee’s skillset and thus their quality in the eyes of employers.
 
 Similar to the distributions of previous year’s income, Figure 4 shows a difference in the distribution of expected earnings of women who attended women focused coding events and women who did not. In fact, just like the distributions of income, the first, second and third quartiles of the distribution of expected earnings of women who attended a coding event appear to be $10,000 higher than their counterparts in the distribution of women who did not attend an event. Once again, a student’s t-test indicates that there is a significant difference in the average of these two distributions resulting in a p-value of 2.399x10-11. On average, women who attended a women focused coding event expected to earn an income $10,000 more than those who didn’t. Once again these results suggest two possibilities. Either the women who attend these coding events have a higher confidence in their abilities and the worth of those abilities, or these events lead to their attendees becoming more self-assured in their coding skills, thus increasing their self-estimation of their worth.
 
