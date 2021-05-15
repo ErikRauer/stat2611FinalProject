@@ -1,5 +1,5 @@
 ---
-title: "Comparing Income across Gender among New Coders"
+title: "Effects of Gender and Women-focused Interventions on Income of Computer Programmers"
 author: "Erik Rauer & Audrey Le Meur"
 date: "5/14/2021"
 output:
@@ -66,15 +66,6 @@ We used the statistical programming language R for most of our analysis. To do s
 
 Examining Figure 1 does not immediately reveal any major differences among the reported incomes of the various genders. Agender-identifying responders appear to mostly have  reported a fairly low income, most making below $40,000 with one outlier at the $100,000 mark. The distributions for those identifying as male and female are relatively similar, with almost identical ranges and medians. Performing an ANOVA test gives a p-value of 0.00988, indicating that there might exist some significant difference in the average income among gender groups. However, running Tukey’s Honest Significance Test gives the results in Table 1. As can be seen, none of the p-values are below our alpha value of 0.05, suggesting that there is no significant difference between the means of the various distributions. These results indicate that our hypothesis was wrong, the women who participated in this survey did not, on average, have a significantly lower income than the men. In fact, there was no significant difference in the average income of any genders reported in the survey.
 
-```{r, echo=FALSE, warning=FALSE}
-
-plotData <- actualData %>%
-  filter(!is.na(Gender))
-
-#Income
-ggplot(data=plotData, aes(x=Gender, y=Income)) + geom_boxplot() + labs(title="Figure 1: Last Year's Income by Gender", y="Income (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
-
-```
 ```{r, echo=FALSE, include=FALSE}
 
 incomeFilter <- !is.na(actualData$Gender) & !is.na(actualData$Income)
@@ -107,6 +98,15 @@ kable(incomeTukey, caption="Tukey Results for Previous Year's Income by Gender")
 
 ```
 
+```{r, echo=FALSE, warning=FALSE}
+
+plotData <- actualData %>%
+  filter(!is.na(Gender))
+
+#Income
+ggplot(data=plotData, aes(x=Gender, y=Income)) + geom_boxplot() + labs(title="Figure 1: Last Year's Income by Gender", y="Income (US Dollars)") + theme(text=element_text(family="serif"), plot.title=element_text(hjust=0.5))
+
+```
 
 ## Comparing expected earnings across gender
 
@@ -126,8 +126,6 @@ aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gen
 
 aggregate(actualData$ExpectedEarning[expectedEarningFilter], list(actualData$Gender[expectedEarningFilter]), median)
 ```
-
-
 
 ```{r, include=FALSE}
 
@@ -152,8 +150,9 @@ kable(expectedTukey, caption="Tukey Results for Expected Earnings by Gender")
 
 ```
 
-## Comparing income and expected earnings on whether or not they attended a female coding event
+\newpage
 
+## Comparing income and expected earnings on whether or not they attended a female coding event
 
 Comparing the distribution of the income of women that attended a women-focused coding event with the distribution of the income of women who did not attend such an event shows some differences between the two. Primarily of note is that the first, second, and third quartiles of the distribution of women who attended an event appear to be roughly $10,000 higher than those who didn’t. Performing a student’s t-test confirms what these observations seem to show: the average women who attended a female focused event had an income of $8,000 more than those who didn't, which is a significantly higher amount (p-values of 5.482x10-6). This suggests two possibilities: either women who have a higher income tend to be the ones who go to these women focused coding events, or alternatively, these coding events do help increase the income of their attendees, likely by increasing the attendee’s skillset and thus their quality in the eyes of employers.
 
@@ -205,6 +204,8 @@ t.test(maleEventData$ExpectedEarning[maleEventData$attendedEvent], maleEventData
 
 # Conclusions
 
-# Possible Future Work
+# Future Work
+
+Our work is confined by its correlational nature. Future work should look at any confounding factors. For instance, many boot camps require admission into their programs, which may skew their participants to be more skilled than those who do not get admitted. Further study may also seek to determine whether there are differences between intensive programs (such as boot camps) and more casual programs (such as coding events). Additionally, other studies might want to check for any differences between women-focused events and non-women-focused ones to determine the true effectiveness of such programs.
 
 # References
